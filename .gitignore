@@ -1,0 +1,4 @@
+.env
+*.lst
+images/
+*db*

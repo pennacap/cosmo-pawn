@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CosmoPawn | {{ path }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An alternative to ImageNet!">
+    <meta name="author" content="pennacap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="preload" as="style">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/images/0.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            color: white;
+            text-decoration: none;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+            height: 8vh;
+        }
+
+        nav>button {
+            flex: 1;
+            border: none;
+            padding-top: 1vh;
+            padding-bottom: 1vh;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.75vh;
+            background-color: #111;
+            color: white;
+            height: 100%;
+        }
+
+        #search {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #223;
+            margin: 1vw;
+            padding: 1vw;
+        }
+
+        .kws > span {
+            padding: 1vh;
+            background-color: #333;
+            
+        }
+        #search > div {
+            margin: 1vh;
+        }
+    </style>
+</head>
+<body style="background-color: #2A2A33;">
+    <nav>
+        <img src="/images/0.png" style="height: 8vh;">
+        <button>
+            Home
+        </button>
+        <button>
+            About
+        </button>
+    </nav>
+    <main>
+        <article id="search">
+            <img src="/images/{{ path }}" style="height: 50vh" />
+            <div class="kws">
+                {% for i in keywords %}
+                <span>{{ i }}</span>
+                {% endfor %}
+            </div>
+            <div style="display: flex; justify-content: center; align-items: center; background-color: #242424; border-radius: 1vh; padding: 1vh;">
+                <img src="{{ avatar }}" style="height: 4vh; border-radius: 100vh;" />
+                <span style="font-size: 2vh; font-family: Oswald, sans-serif; margin-left: 1vw;">{{ username }}</span>
+
+            </div>
+        </article>
+    </main>
+
+</body>
+</html>

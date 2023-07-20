@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CosmoPawn | Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An alternative to ImageNet!">
+    <meta name="author" content="pennacap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="preload" as="style">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/images/0.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            color: white;
+            text-decoration: none;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+            height: 8vh;
+        }
+
+        nav button {
+            border: none;
+            padding-top: 1vh;
+            padding-bottom: 1vh;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.75vh;
+            background-color: #111;
+            color: white;
+            height: 100%;
+            width: 100%;
+        }
+
+        .link {
+            
+            width: 100%;
+        }
+        nav a {
+            height: 100%;
+        }
+
+        #search {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+
+            display: flex;
+            flex-direction: row;
+            background-color: #223;
+            margin: 1vw;
+            padding: 1vw;
+        }
+
+        #title {
+            font-size: 7.5vh;
+            font-family: 'Courier New', monospace;
+        }
+
+        article>p {
+            font-size: 2.5vh;
+            font-family: monospace;
+        }
+
+        #main {
+            text-align: center;
+            padding: 5rem;
+        }
+
+        #float-stuff {
+
+            margin: 1vw;
+            height: 100%;
+        }
+
+        #leftSel {
+            background-color: #112;
+            min-width: 5vw;
+            min-height: 100%;
+            overflow-y: hidden;
+        }
+
+        #dataTitle {
+            font-size: 10vh;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body style="background-color: #2A2A33;">
+    <nav>
+        <a href="/">
+            <img src="/images/0.png" style="height: 100%;">
+        </a>
+        <a href="/" class="link">
+            <button>
+                Home
+            </button>
+        </a>
+        <a href="/docs" class="link">
+            <button style="width: 100%">
+                Docs
+            </button>
+        </a>
+        <a href="/" class="link">
+            <button style="width: 100%">
+                About
+            </button>
+        </a>
+    </nav>
+    <main>
+        <article id="main">
+            <h1 id="title">CosmoPawn</h1>
+            <p>
+                CosmoPawn is an alternative to ImageNet.
+            </p>
+        </article>
+        <article id="search">
+            <div id="float-stuff">
+                <input id="searchInput" placeholder="Search..." oninput="filterIt()">
+                <div id="leftSel">
+
+                </div>
+            </div>
+            <div id="results">
+
+            </div>
+        </article>
+    </main>
+    <script>
+        String.prototype.replaceAt = function (index, replacement) {
+            return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+        }
+        var a;
+        var lastVal;
+        Object.filter = (obj, predicate) =>
+            Object.keys(obj)
+                .filter(key => predicate(key, obj[key]))
+                .reduce((res, key) => (res[key] = obj[key], res), {});
+        function search(input) {
+            input = input || "";
+            if (typeof a == "undefined") {
+                return;
+            }
+            var results = Object.filter(a, (x) => x?.toLowerCase()?.includes(input.toLowerCase()));
+            if (Object.keys(results).length == 0) {
+                document.getElementById('results').innerHTML = '<p>Nothing Found :(</p>';
+                lastVal = null;
+            }
+            else {
+                var first = Object.keys(results).sort((a, b) => results[b] - results[a])[0];
+
+                if (first == lastVal)
+                    return;
+                document.getElementById('results').innerHTML = `<h1 id="dataTitle"><a href='/${first}'>${first.replaceAt(0, first[0].toUpperCase())}</a></h1>`;
+
+                fetch(`/${first}`).then(x => x.json()).then(x => {
+                    x.forEach(y => {
+                        document.getElementById('results').innerHTML += `<a href="/items/${y}"><img style="height:10vw" src="/images/${y}"></a>`;
+                    })
+                })
+
+                lastVal = Object.keys(results)[0];
+            }
+        }
+        function filterIt() {
+            document.getElementById('leftSel').innerHTML = '';
+            var results = Object.filter(a, x => x.toLowerCase().includes(document.getElementById("searchInput").value.toLowerCase()));
+            for (let i of Object.keys(results).sort((a, b) => results[b] - results[a])) {
+                // console.log(results, results[i], i, Object.keys(results).sort((a, b) => results[b] - results[a]));
+                document.getElementById('leftSel').innerHTML += `<p style="cursor:pointer" onclick="search('${i}')">&#x2022; ${i.replaceAt(0, i[0].toUpperCase())}</p>`;
+            }
+        }
+        window.onload = async () => {
+            try {
+                a = await fetch('/keywords').then(a => a.json());
+                filterIt();
+                search();
+            }
+            catch (e) {
+                console.log(e)
+                document.getElementById('results').innerHTML = '<p>Failed to fetch</p>';
+            }
+
+
+        }
+    </script>
+</body>
+</html>

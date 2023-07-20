@@ -1,0 +1,203 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "CosmoPawn",
+        "description": "Access the image data from the CosmoPawn database",
+        "version": "1.0.1",
+        "termsOfService": "https://cosmopawn.ml/terms",
+        "contact": {
+            "name": "CosmoPawn",
+            "url": "https://cosmopawn.ml"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "servers": [
+        {
+            "url": "https://api.cosmopawn.ml/v1",
+            "description": "CosmoPawn API"
+        }
+    ],
+    "paths": {
+        "/{keyword}": {
+            "get": {
+                "summary": "Get image data from the CosmoPawn database",
+                "description": "Get image data from the CosmoPawn database",
+                "tags": [
+                    "Image Related"
+                ],
+                "parameters": [
+                    {
+                        "name": "keyword",
+                        "in": "path",
+                        "description": "The keyword to search for",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "operationId": "getImages",
+                "responses": {
+                    "200": {
+                        "description": "Images are returned",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Keyword not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too many requests",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/images/{imageId}": {
+            "get": {
+                "summary": "Get image data from the CosmoPawn database",
+                "description": "Get image data from the CosmoPawn database",
+                "tags": [
+                    "Image Related"
+                ],
+                "parameters": [
+                    {
+                        "name": "imageId",
+                        "in": "path",
+                        "description": "The image ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "operationId": "getImage",
+                "responses": {
+                    "200": {
+                        "description": "Image is returned",
+                        "content": {
+                            "image/png": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "image/jpeg": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "image/webp": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Image not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too many requests",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/keywords": {
+            "get": {
+                "summary": "Get keywords from the CosmoPawn database",
+                "description": "Get keywords from the CosmoPawn database",
+                "tags": [
+                    "Keyword Related"
+                ],
+                "operationId": "getKeywords",
+                "responses": {
+                    "200": {
+                        "description": "Keywords are returned",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too many requests",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}
