@@ -4,10 +4,10 @@
         "title": "CosmoPawn",
         "description": "Access the image data from the CosmoPawn database",
         "version": "1.0.1",
-        "termsOfService": "https://cosmopawn.ml/terms",
+        "termsOfService": "http://143.198.148.104/terms",
         "contact": {
             "name": "CosmoPawn",
-            "url": "https://cosmopawn.ml"
+            "url": "http://143.198.148.104/"
         },
         "license": {
             "name": "MIT",
@@ -16,11 +16,147 @@
     },
     "servers": [
         {
-            "url": "https://api.cosmopawn.ml/v1",
+            "url": "http://143.198.148.104/",
             "description": "CosmoPawn API"
         }
     ],
     "paths": {
+        "/upload": {
+            "post": {
+                "description": "Upload an image to CosmoPawn",
+                "summary": "Upload an image to CosmoPawn",
+                "tags": [
+                    "Image Related"
+                ],
+                "parameters": [
+                    {
+                        "name": "Keywords",
+                        "in": "header",
+                        "description": "The keywords to link the image to",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "The image to upload",
+                    "required": true,
+                    "content": {
+                        "image/*": {}
+                    }
+                },
+                "operationId": "uploadImage",
+                "responses": {
+                    "200": {
+                        "description": "The image is uploaded",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "The request is invalid/malformed",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too many requests",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/keywords/{keyword}.sha256": {
+            "get": {
+                "summary": "Get image hashes for a keyword",
+                "description": "Get image hashes for a keyword",
+                "tags": [
+                    "Image Related"
+                ],
+                "parameters": [
+                    {
+                        "name": "keyword",
+                        "in": "path",
+                        "description": "The keyword to search for",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "operationId": "getImageHashes",
+                "responses": {
+                    "200": {
+                        "description": "Image hashes are returned",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Keyword not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too many requests",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/{keyword}": {
             "get": {
                 "summary": "Get image data from the CosmoPawn database",
@@ -198,6 +334,5 @@
                 }
             }
         }
-
     }
 }
