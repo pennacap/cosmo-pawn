@@ -13,9 +13,9 @@ TOKEN=<the bot token from step 1>
 ```
 
 Assuming, you have Python and PIP installed, run the following commands
-```
+```sh
 python -m pip install -r requirements.txt
-python bot.py
+waitress-serve 'bot:flask_app'
 ```
 
 
